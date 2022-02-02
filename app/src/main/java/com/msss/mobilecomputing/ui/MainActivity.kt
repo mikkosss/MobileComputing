@@ -1,5 +1,7 @@
 package com.msss.mobilecomputing.ui
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,16 +10,24 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.msss.mobilecomputing.ui.login.LoginManager
 import com.msss.mobilecomputing.ui.theme.MobileComputingTheme
 
 class MainActivity : ComponentActivity() {
+    lateinit var login: LoginManager
+    lateinit var context: Context
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        context = applicationContext
+        login = LoginManager(context)
+
         setContent {
             MobileComputingTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    MobileComputingApp()
+                    MobileComputingApp(context, login)
                 }
             }
         }

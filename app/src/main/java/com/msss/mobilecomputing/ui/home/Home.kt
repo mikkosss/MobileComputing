@@ -1,9 +1,7 @@
 package com.msss.mobilecomputing.ui.home
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
+import android.content.Context
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.icons.Icons
@@ -19,11 +17,15 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.insets.systemBarsPadding
 import com.msss.mobilecomputing.R
+import com.msss.mobilecomputing.ui.home.categoryReminder.CategoryReminder
+import com.msss.mobilecomputing.ui.login.LoginManager
 
 @Composable
 fun Home(
 //    viewModel: HomeViewModel = viewModel(),
-    navController: NavController
+    navController: NavController,
+    context: Context,
+    login: LoginManager
 ) {
 //   Text(text = "Home screen TODO")
 
@@ -53,7 +55,9 @@ fun Home(
                 navController
             )
 
-
+            CategoryReminder(
+                modifier = Modifier.fillMaxSize()
+            )
         }
     }
 }
@@ -75,9 +79,6 @@ private fun HomeAppBar(
         },
         //backgroundColor = backgroundColor,
         actions = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(imageVector = Icons.Filled.Search, contentDescription = stringResource(R.string.search))
-            }
             IconButton(onClick = { navController.navigate("profile") }) {
                 Icon(imageVector = Icons.Filled.AccountCircle, contentDescription = stringResource(R.string.account))
             }

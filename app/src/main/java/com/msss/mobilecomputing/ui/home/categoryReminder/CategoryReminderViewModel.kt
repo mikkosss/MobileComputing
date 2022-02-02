@@ -1,9 +1,11 @@
 package com.msss.mobilecomputing.ui.home.categoryReminder
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.msss.mobilecomputing.data.entity.Reminder
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.util.*
 
 class CategoryReminderViewModel : ViewModel() {
@@ -18,6 +20,7 @@ class CategoryReminderViewModel : ViewModel() {
             list.add(
                 Reminder(
                     message = "Reminder $x",
+                    locationName = "Oulu",
                     location_x = 0,
                     location_y = 0,
                     reminder_time = Date(),
@@ -25,6 +28,12 @@ class CategoryReminderViewModel : ViewModel() {
                     creator_id = 1,
                     reminder_seen = false
                 )
+            )
+        }
+
+        viewModelScope.launch {
+            _state.value = CategoryReminderViewState(
+                reminders = list
             )
         }
     }
