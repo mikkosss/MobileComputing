@@ -1,15 +1,11 @@
 package com.msss.mobilecomputing.ui
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import com.msss.mobilecomputing.ui.login.LoginManager
 import com.msss.mobilecomputing.ui.theme.MobileComputingTheme
 

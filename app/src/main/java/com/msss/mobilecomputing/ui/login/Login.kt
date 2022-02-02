@@ -34,8 +34,8 @@ fun Login(
     val focusManager = LocalFocusManager.current
 
     Surface(modifier = Modifier
-                        .fillMaxSize()
-                        .clickable(onClick = { focusManager.clearFocus() })
+        .fillMaxSize()
+        .clickable(onClick = { focusManager.clearFocus() })
     ) {
         val username = rememberSaveable { mutableStateOf("") }
         val password = rememberSaveable { mutableStateOf("") }
@@ -114,11 +114,18 @@ fun Login(
             Button(
                 onClick = {
                     if (username.value != "" && password.value != "") {
-                        login.createUser(username.value, password.value)
-                        val toast = Toast.makeText(context, "User created", Toast.LENGTH_SHORT)
-                        toast.setGravity(Gravity.CENTER,0,0)
-                        toast.show()
-                        navController.navigate("home")
+                        if (login.userExist(username.value)) {
+                            val toast = Toast.makeText(context, "Username already in use", Toast.LENGTH_SHORT)
+                            toast.setGravity(Gravity.CENTER,0,0)
+                            toast.show()
+                        }
+                        else {
+                            login.createUser(username.value, password.value)
+                            val toast = Toast.makeText(context, "User created", Toast.LENGTH_SHORT)
+                            toast.setGravity(Gravity.CENTER, 0, 0)
+                            toast.show()
+                            navController.navigate("home")
+                        }
                     }
                     else {
                         val toast = Toast.makeText(context, "Enter valid username and password", Toast.LENGTH_SHORT)

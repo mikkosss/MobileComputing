@@ -48,4 +48,10 @@ class LoginManager(var context: Context) {
         }
         else return false
     }
+
+    fun userExist(
+        name: String
+    ): Boolean {
+        return pref.getString(KEY_NAME, null).equals(name)
+    }
 }

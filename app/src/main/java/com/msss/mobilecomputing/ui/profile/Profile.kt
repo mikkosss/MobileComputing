@@ -17,10 +17,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.ImeOptions
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -62,21 +60,21 @@ fun Profile(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(10.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.AccountCircle,
                     contentDescription = null,
-                    modifier = Modifier.size(200.dp)
+                    modifier = Modifier.size(150.dp)
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(9.dp))
                 Text(
                     text = login.displayUsername().toString(),
                     modifier = Modifier
                         .padding(start = 4.dp)
                         .heightIn(max = 24.dp)
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(9.dp))
                 OutlinedTextField(
                     value = currentPassword.value,
                     onValueChange = { data -> currentPassword.value = data.trim() },
@@ -87,12 +85,14 @@ fun Profile(
                         imeAction = ImeAction.Next
                     ),
                     keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                        onNext = {
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }
                     ),
                     visualTransformation = PasswordVisualTransformation(),
                     singleLine = true
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(9.dp))
                 OutlinedTextField(
                     value = newPassword.value,
                     onValueChange = { data -> newPassword.value = data.trim() },
@@ -106,18 +106,30 @@ fun Profile(
                     visualTransformation = PasswordVisualTransformation(),
                     singleLine = true
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(9.dp))
                 Button(
                     onClick = {
-                        if (login.changePass(currentPassword.value, newPassword.value)) {
-                            val toast =
-                                Toast.makeText(context, "Password changed", Toast.LENGTH_SHORT)
-                            toast.setGravity(Gravity.CENTER, 0, 0)
-                            toast.show()
-                        } else {
+                        if (currentPassword.value != "" && newPassword.value != "") {
+                            if (login.changePass(currentPassword.value, newPassword.value)) {
+                                val toast =
+                                    Toast.makeText(context, "Password changed", Toast.LENGTH_SHORT)
+                                toast.setGravity(Gravity.CENTER, 0, 0)
+                                toast.show()
+                                navController.navigate("home")
+                            } else {
+                                val toast = Toast.makeText(
+                                    context,
+                                    "Current password wrong",
+                                    Toast.LENGTH_SHORT
+                                )
+                                toast.setGravity(Gravity.CENTER, 0, 0)
+                                toast.show()
+                            }
+                        }
+                        else {
                             val toast = Toast.makeText(
                                 context,
-                                "Current password wrong",
+                                "Input empty",
                                 Toast.LENGTH_SHORT
                             )
                             toast.setGravity(Gravity.CENTER, 0, 0)
@@ -130,7 +142,7 @@ fun Profile(
                 ) {
                     Text(text = "Change password")
                 }
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(9.dp))
                 Button(
                     onClick = {
                         val toast = Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT)

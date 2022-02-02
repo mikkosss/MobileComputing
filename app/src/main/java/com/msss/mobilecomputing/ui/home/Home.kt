@@ -27,7 +27,6 @@ fun Home(
     context: Context,
     login: LoginManager
 ) {
-//   Text(text = "Home screen TODO")
 
     Scaffold(
         modifier = Modifier.padding(bottom = 24.dp),
