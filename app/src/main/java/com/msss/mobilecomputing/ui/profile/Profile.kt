@@ -84,9 +84,6 @@ fun Profile(
                         keyboardType = KeyboardType.Password,
                         imeAction = ImeAction.Next
                     ),
-                    /*keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                    ),*/
                     visualTransformation = PasswordVisualTransformation(),
                     singleLine = true
                 )
