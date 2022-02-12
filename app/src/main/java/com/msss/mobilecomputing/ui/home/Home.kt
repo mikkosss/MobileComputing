@@ -1,25 +1,24 @@
 package com.msss.mobilecomputing.ui.home
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.insets.systemBarsPadding
 import com.msss.mobilecomputing.R
 import com.msss.mobilecomputing.ui.home.categoryReminder.CategoryReminder
 import com.msss.mobilecomputing.ui.login.LoginManager
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Home(
 //    viewModel: HomeViewModel = viewModel(),
@@ -27,12 +26,13 @@ fun Home(
     context: Context,
     login: LoginManager
 ) {
+    navController.clearBackStack("login")
 
     Scaffold(
         modifier = Modifier.padding(bottom = 24.dp),
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navController.navigate(route = "reminder") },
+                onClick = { navController.navigate(route = "reminder/false/0") },
                 modifier = Modifier.padding(all = 20.dp)
             ) {
                Icon(
@@ -55,7 +55,8 @@ fun Home(
             )
 
             CategoryReminder(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                navController
             )
         }
     }

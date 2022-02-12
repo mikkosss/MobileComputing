@@ -2,4 +2,5 @@
     <string name="app_name">MobileComputing</string>
     <string name="account">Account</string>
     <string name="check_mark">Check</string>
+    <string name="delete">delete</string>
 </resources>
