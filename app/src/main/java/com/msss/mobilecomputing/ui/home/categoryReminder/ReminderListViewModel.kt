@@ -13,18 +13,18 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
-class CategoryReminderViewModel(
+class ReminderListViewModel(
     private val reminderRepository: ReminderRepository = Graph.reminderRepository
 ) : ViewModel() {
-    private val _state = MutableStateFlow(CategoryReminderViewState())
+    private val _state = MutableStateFlow(ReminderListViewState())
 
-    val state: StateFlow<CategoryReminderViewState>
+    val state: StateFlow<ReminderListViewState>
         get() = _state
 
     init {
         viewModelScope.launch {
-            reminderRepository.reminders().collect { list ->
-                _state.value = CategoryReminderViewState(
+            reminderRepository.allReminders().collect { list ->
+                _state.value = ReminderListViewState(
                     reminders = list
                 )
             }
@@ -36,6 +36,6 @@ class CategoryReminderViewModel(
     }
 }
 
-data class CategoryReminderViewState(
+data class ReminderListViewState(
     val reminders: List<Reminder> = emptyList()
 )

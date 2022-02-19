@@ -3,7 +3,6 @@ package com.msss.mobilecomputing.ui.reminder
 import android.content.Context
 import android.os.Build
 import android.view.Gravity
-import android.widget.CalendarView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
@@ -24,22 +23,13 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.accompanist.insets.systemBarsPadding
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.msss.mobilecomputing.data.entity.Reminder
 import com.msss.mobilecomputing.ui.login.LoginManager
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeParseException
-import java.util.stream.IntStream.range
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -64,6 +54,7 @@ fun Reminder(
     val reminderTime = rememberSaveable { mutableStateOf("") }
     val creationTime = rememberSaveable { mutableStateOf("") }
     val creatorId = rememberSaveable { mutableStateOf("") }
+    val reminderSeen: Boolean
 
     val year = rememberSaveable { mutableStateOf("") }
     val month = rememberSaveable { mutableStateOf("") }
@@ -86,8 +77,15 @@ fun Reminder(
         day.value = isSingleDigit(reminder.reminder_time.dayOfMonth)
         hour.value = isSingleDigit(reminder.reminder_time.hour)
         minute.value = isSingleDigit(reminder.reminder_time.minute)
+        reminderSeen = reminder.reminder_seen
     }
-    else reminderId = 0
+    else {
+        reminderId = 0
+        year.value = LocalDateTime.now().year.toString()
+        month.value = LocalDateTime.now().monthValue.toString()
+        day.value = LocalDateTime.now().dayOfMonth.toString()
+        reminderSeen = false
+    }
 
     Surface(modifier = Modifier.clickable(onClick = { focusManager.clearFocus() }))
     {
@@ -275,7 +273,7 @@ fun Reminder(
                                             },
                                             creation_time = stringToDate(creationTime.value),
                                             creator_id = creatorId.value.toLong(),
-                                            reminder_seen = false
+                                            reminder_seen = reminderSeen
                                         )
                                     )
                                 }
@@ -328,7 +326,7 @@ fun Reminder(
                                             creation_time = LocalDateTime.now(),
                                             creator_id = login.displayUsername().hashCode()
                                                 .toLong(),
-                                            reminder_seen = false
+                                            reminder_seen = reminderSeen
                                         )
                                     )
                                 }

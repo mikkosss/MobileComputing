@@ -29,11 +29,11 @@ import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CategoryReminder(
+fun ReminderListView(
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
-    val viewModel: CategoryReminderViewModel = viewModel()
+    val viewModel: ReminderListViewModel = viewModel()
     val coroutineScope = rememberCoroutineScope()
     val viewState by viewModel.state.collectAsState()
 
@@ -52,7 +52,7 @@ fun CategoryReminder(
 private fun ReminderList(
     list: List<Reminder>,
     navController: NavController,
-    viewModel: CategoryReminderViewModel,
+    viewModel: ReminderListViewModel,
     coroutineScope: CoroutineScope
 ) {
     LazyColumn(
@@ -76,7 +76,7 @@ private fun ReminderList(
 private fun ReminderListItem(
     reminder: Reminder,
     navController: NavController,
-    viewModel: CategoryReminderViewModel,
+    viewModel: ReminderListViewModel,
     coroutineScope: CoroutineScope,
     modifier: Modifier = Modifier
 ) {

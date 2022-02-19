@@ -12,6 +12,7 @@ import com.msss.mobilecomputing.MobileComputingAppState
 import com.msss.mobilecomputing.data.entity.Reminder
 import com.msss.mobilecomputing.rememberMobileComputingAppState
 import com.msss.mobilecomputing.ui.home.Home
+import com.msss.mobilecomputing.ui.home.categoryReminder.ReminderList
 import com.msss.mobilecomputing.ui.login.Login
 import com.msss.mobilecomputing.ui.login.LoginManager
 import com.msss.mobilecomputing.ui.profile.Profile
@@ -45,6 +46,9 @@ fun MobileComputingApp(
             val edit = it.arguments!!.getBoolean("edit")
             val id = it.arguments!!.getLong("reminderId")
             Reminder(navController = appState.navController, context, login, edit, id)
+        }
+        composable(route = "reminderList") {
+            ReminderList(navController = appState.navController)
         }
     }
 }

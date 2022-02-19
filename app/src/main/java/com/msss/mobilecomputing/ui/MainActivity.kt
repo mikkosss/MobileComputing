@@ -1,9 +1,11 @@
 package com.msss.mobilecomputing.ui
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import com.msss.mobilecomputing.ui.login.LoginManager
@@ -13,6 +15,7 @@ class MainActivity : ComponentActivity() {
     lateinit var login: LoginManager
     lateinit var context: Context
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

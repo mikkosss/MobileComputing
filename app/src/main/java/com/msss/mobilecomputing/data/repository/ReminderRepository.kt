@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 class ReminderRepository(
     private val reminderDao: ReminderDao
 ) {
+    fun allReminders(): Flow<List<Reminder>> = reminderDao.allReminders()
     fun reminders(): Flow<List<Reminder>> = reminderDao.reminders()
     fun getReminderWithId(reminderId: Long) : Reminder? = reminderDao.getReminderWithId(reminderId)
 
