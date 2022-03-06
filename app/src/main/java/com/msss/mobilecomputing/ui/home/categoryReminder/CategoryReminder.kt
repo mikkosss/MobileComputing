@@ -112,12 +112,12 @@ private fun ReminderListItem(
             }
         )
 
-        // location x coordinate
+        // location latitude
         Text(
-            text = "X: " + reminder.location_x.toString() + ",",
+            text = "Latitude: " + reminder.location_y.toString(),
             maxLines = 1,
             style = MaterialTheme.typography.subtitle2,
-            modifier = Modifier.constrainAs(locationX) {
+            modifier = Modifier.constrainAs(locationY) {
                 linkTo(
                     start = parent.start,
                     end = delete.start,
@@ -130,20 +130,21 @@ private fun ReminderListItem(
                 width = Dimension.preferredWrapContent
             }
         )
-        // location y coordinate
+
+        // location longitude
         Text(
-            text = "Y: " + reminder.location_y.toString(),
+            text = "Longitude: " + reminder.location_x.toString(),
             maxLines = 1,
             style = MaterialTheme.typography.subtitle2,
-            modifier = Modifier.constrainAs(locationY) {
+            modifier = Modifier.constrainAs(locationX) {
                 linkTo(
-                    start = locationX.end,
+                    start = parent.start,
                     end = delete.start,
                     startMargin = 24.dp,
                     endMargin = 8.dp,
                     bias = 0f
                 )
-                top.linkTo(message.bottom, margin = 6.dp)
+                top.linkTo(locationY.bottom, margin = 6.dp)
                 bottom.linkTo(parent.bottom, margin = 10.dp)
                 width = Dimension.preferredWrapContent
             }

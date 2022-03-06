@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -18,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.accompanist.insets.systemBarsPadding
+import com.google.android.gms.maps.model.LatLng
 import com.msss.mobilecomputing.R
 import com.msss.mobilecomputing.ui.home.categoryReminder.CategoryReminder
 import com.msss.mobilecomputing.ui.login.LoginManager

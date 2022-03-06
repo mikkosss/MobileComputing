@@ -15,6 +15,7 @@ import com.msss.mobilecomputing.ui.home.Home
 import com.msss.mobilecomputing.ui.home.categoryReminder.ReminderList
 import com.msss.mobilecomputing.ui.login.Login
 import com.msss.mobilecomputing.ui.login.LoginManager
+import com.msss.mobilecomputing.ui.maps.ReminderLocationMap
 import com.msss.mobilecomputing.ui.profile.Profile
 import com.msss.mobilecomputing.ui.reminder.Reminder
 
@@ -49,6 +50,9 @@ fun MobileComputingApp(
         }
         composable(route = "reminderList") {
             ReminderList(navController = appState.navController)
+        }
+        composable(route = "map") {
+            ReminderLocationMap(navController = appState.navController)
         }
     }
 }

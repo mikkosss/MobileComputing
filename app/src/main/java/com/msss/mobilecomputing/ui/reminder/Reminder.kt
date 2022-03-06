@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.accompanist.insets.systemBarsPadding
+import com.google.android.gms.maps.model.LatLng
 import com.msss.mobilecomputing.data.entity.Reminder
 import com.msss.mobilecomputing.ui.login.LoginManager
 import kotlinx.coroutines.launch
@@ -87,6 +88,12 @@ fun Reminder(
         reminderSeen = false
     }
 
+    val latlng = navController
+        .currentBackStackEntry
+        ?.savedStateHandle
+        ?.getLiveData<LatLng>("location_data")
+        ?.value
+
     Surface(modifier = Modifier.clickable(onClick = { focusManager.clearFocus() }))
     {
         Column(
@@ -125,7 +132,7 @@ fun Reminder(
                     singleLine = false
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-                Text("Location")
+                /*Text("Location")
                 Row {
                     OutlinedTextField(
                         value = locationX.value,
@@ -157,6 +164,18 @@ fun Reminder(
                                 FocusDirection.Down
                             )
                         })
+                    )
+                }*/
+                if (latlng == null) {
+                    OutlinedButton(
+                        onClick = { navController.navigate("map") },
+                        modifier = Modifier.height(55.dp)
+                    ) {
+                        Text(text = "Reminder location")
+                    }
+                } else {
+                    Text(
+                        text = "Lat: ${latlng.latitude}, \nLng: ${latlng.longitude}"
                     )
                 }
                 Spacer(modifier = Modifier.height(10.dp))
@@ -309,16 +328,20 @@ fun Reminder(
                                     viewModel.saveReminder(
                                         Reminder(
                                             message = message.value,
-                                            location_x = try {
-                                                locationX.value.toFloat()
-                                            } catch (e: NumberFormatException) {
-                                                0.0f
-                                            },
-                                            location_y = try {
-                                                locationY.value.toFloat()
-                                            } catch (e: NumberFormatException) {
-                                                0.0f
-                                            },
+                                            location_x = if (latlng != null) {
+                                                try {
+                                                    latlng.longitude.toFloat()
+                                                } catch (e: NumberFormatException) {
+                                                    0.0f
+                                                }
+                                            } else 0.0f,
+                                            location_y = if(latlng != null) {
+                                                try {
+                                                    latlng.latitude.toFloat()
+                                                } catch (e: NumberFormatException) {
+                                                    0.0f
+                                                }
+                                            } else 0.0f,
                                             reminder_time = when {
                                                 reminderTime.value != "" -> stringToDate(reminderTime.value)
                                                 else -> LocalDateTime.now()

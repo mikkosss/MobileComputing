@@ -26,12 +26,16 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ReminderListView(
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
+    latitude: Float,
+    longitude: Float
 ) {
     val viewModel: ReminderListViewModel = viewModel()
     val coroutineScope = rememberCoroutineScope()
@@ -42,7 +46,9 @@ fun ReminderListView(
             list = viewState.reminders,
             navController,
             viewModel,
-            coroutineScope
+            coroutineScope,
+            latitude,
+            longitude
         )
     }
 }
@@ -53,20 +59,37 @@ private fun ReminderList(
     list: List<Reminder>,
     navController: NavController,
     viewModel: ReminderListViewModel,
-    coroutineScope: CoroutineScope
+    coroutineScope: CoroutineScope,
+    latitude: Float,
+    longitude: Float
 ) {
     LazyColumn(
         contentPadding = PaddingValues(0.dp),
         verticalArrangement = Arrangement.Center
     ) {
-        items(list) { item ->
-            ReminderListItem(
-                reminder = item,
-                navController,
-                viewModel,
-                coroutineScope,
-                modifier = Modifier.fillParentMaxWidth()
-            )
+        if (latitude == 0.0f && longitude == 0.0f) {
+            items(list) { item ->
+                ReminderListItem(
+                    reminder = item,
+                    navController,
+                    viewModel,
+                    coroutineScope,
+                    modifier = Modifier.fillParentMaxWidth()
+                )
+            }
+        }
+        else {
+            items(list) { item ->
+                if (distance(item.location_y,item.location_x,latitude,longitude) < 0.0025f) {
+                    ReminderListItem(
+                        reminder = item,
+                        navController,
+                        viewModel,
+                        coroutineScope,
+                        modifier = Modifier.fillParentMaxWidth()
+                    )
+                }
+            }
         }
     }
 }
@@ -112,12 +135,12 @@ private fun ReminderListItem(
             }
         )
 
-        // location x coordinate
+        // location latitude
         Text(
-            text = "X: " + reminder.location_x.toString() + ",",
+            text = "Latitude: " + reminder.location_y.toString(),
             maxLines = 1,
             style = MaterialTheme.typography.subtitle2,
-            modifier = Modifier.constrainAs(locationX) {
+            modifier = Modifier.constrainAs(locationY) {
                 linkTo(
                     start = parent.start,
                     end = delete.start,
@@ -130,20 +153,21 @@ private fun ReminderListItem(
                 width = Dimension.preferredWrapContent
             }
         )
-        // location y coordinate
+
+        // location longitude
         Text(
-            text = "Y: " + reminder.location_y.toString(),
+            text = "Longitude: " + reminder.location_x.toString(),
             maxLines = 1,
             style = MaterialTheme.typography.subtitle2,
-            modifier = Modifier.constrainAs(locationY) {
+            modifier = Modifier.constrainAs(locationX) {
                 linkTo(
-                    start = locationX.end,
+                    start = parent.start,
                     end = delete.start,
                     startMargin = 24.dp,
                     endMargin = 8.dp,
                     bias = 0f
                 )
-                top.linkTo(message.bottom, margin = 6.dp)
+                top.linkTo(locationY.bottom, margin = 6.dp)
                 bottom.linkTo(parent.bottom, margin = 10.dp)
                 width = Dimension.preferredWrapContent
             }
@@ -159,8 +183,8 @@ private fun ReminderListItem(
                 linkTo(
                     start = parent.start,
                     end = delete.start,
-                    startMargin = 8.dp,
-                    endMargin = 16.dp,
+                    startMargin = 24.dp,
+                    endMargin = 8.dp,
                     bias = 0f
                 )
                 top.linkTo(locationX.bottom, margin = 6.dp)
@@ -198,4 +222,12 @@ private fun dateFormatter(
 ): String {
     val formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy", Locale.getDefault())
     return date.format(formatter)
+}
+private fun distance(
+    lat1: Float,
+    long1: Float,
+    lat2: Float,
+    long2: Float
+): Float {
+    return sqrt(((lat2-lat1).pow(2)) + ((long2-long1).pow(2)))
 }
